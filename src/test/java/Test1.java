@@ -7,6 +7,7 @@ import org.testng.Assert;
 
 import java.time.Duration;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Test1 {
     @Test
@@ -26,7 +27,12 @@ public class Test1 {
         driver.findElement(By.xpath("/html/body/div[1]/div[2]/div/div[2]/div/div[2]/div/div/form/div[2]/div[2]/input")).sendKeys(generateRandomPassword()); // inputting a randomly generated password
         driver.findElement(By.xpath("/html/body/div[1]/div[2]/div/div[2]/div/div[2]/div/div/form/button")).click(); // clicking on 'register'
 
-        WebElement resultText = driver.findElement(By.xpath("/html/body/div[1]/div[3]/div[2]/div[2]/div[1]/div[1]/a/span[2]"));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(ThreadLocalRandom.current().nextInt(2, 7))); //waiting for a random time from 2-6 seconds for captcha
+        driver.findElement(By.xpath("/html/body/div[1]/form/button")).click(); // clicking on 'im not a robot' lol
+        //doesn't work due to new anti robot implementation sadge
+        WebElement resultText = driver.findElement(By.xpath(""));
+
+
         Assert.assertEquals(resultText.getText(), "Mano aruodas"); // checking if the registration is successful
         driver.close(); // closing the browser
     }
